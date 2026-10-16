@@ -6,7 +6,6 @@ async function seed() {
 
   const users = [
     ['Admin User', 'admin@campus.edu', password, 'admin'],
-    ['Supervisor User', 'supervisor@campus.edu', password, 'supervisor'],
     ['Technician User', 'technician@campus.edu', password, 'technician'],
     ['Requester User', 'requester@campus.edu', password, 'requester']
   ];
