@@ -14,8 +14,10 @@ app.use(session({
 
 const { requireAuth, requireRole } = require('./middleware/auth');
 const authRoutes = require('./routes/auth');
+const adminUserRoutes = require('./routes/admin-users');
 
 app.use(authRoutes);
+app.use(adminUserRoutes);
 
 app.get('/', (req, res) => {
   if (req.session.user) return res.redirect('/dashboard');
@@ -24,11 +26,6 @@ app.get('/', (req, res) => {
 
 app.get('/dashboard', requireAuth, (req, res) => {
   res.render('dashboard', { user: req.session.user });
-});
-
-// Temporary route to test role restriction
-app.get('/admin/users', requireRole('admin'), (req, res) => {
-  res.send('Admin only page');
 });
 
 const PORT = 3000;
