@@ -23,6 +23,13 @@ router.post('/login', async (req, res) => {
       [email]
     );
     const user = rows[0];
+    console.log('Login check:', {
+    found: !!user,
+    active: user && user.is_active,
+    roleInDb: user && user.role,
+    roleSelected: selectedRole,
+    passwordOk: user ? await bcrypt.compare(password, user.password_hash) : null
+    });
     const valid = user && user.is_active === 1 && user.role === selectedRole
       && (await bcrypt.compare(password, user.password_hash));
 
@@ -80,17 +87,6 @@ router.post('/logout', (req, res) => {
   req.session.destroy(() => res.redirect('/login'));
 });
 
-router.post('/technician/availability', requireRole('technician'), async (req, res) => {
-  try {
-    await pool.query(
-      'UPDATE users SET is_available = NOT is_available WHERE id = ?',
-      [req.session.user.id]
-    );
-    res.redirect('/dashboard');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Something went wrong. Please try again.');
-  }
-});
+
 
 module.exports = router;
