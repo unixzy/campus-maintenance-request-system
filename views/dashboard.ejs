@@ -19,17 +19,19 @@
     <% if (user.role === 'requester') { %>
       <p>You can submit maintenance requests and track their status.</p>
     <% } else if (user.role === 'technician') { %>
-  <p>You can view your assigned jobs and update their status.</p>
-  <p>Your status:
-    <span class="badge <%= isAvailable ? 'bg-success' : 'bg-secondary' %>">
-      <%= isAvailable ? 'Available' : 'Not available' %>
-    </span>
-  </p>
-  <form method="POST" action="/technician/availability">
-    <button type="submit" class="btn btn-outline-primary">
-      Set as <%= isAvailable ? 'not available' : 'available' %>
-    </button>
-  </form>
+      <p>You can view your assigned jobs and update their status.</p>
+      <% if (typeof locals.isAvailable !== 'undefined') { %>
+        <form method="POST" action="/technician/availability" class="d-flex align-items-center gap-2">
+          <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:<%= locals.isAvailable ? '#198754' : '#6c757d' %>;"></span>
+          <div class="form-check form-switch m-0">
+            <input class="form-check-input" type="checkbox" role="switch" id="availability"
+                   <%= locals.isAvailable ? 'checked' : '' %> onchange="this.form.submit()">
+            <label class="form-check-label" for="availability">
+              <%= locals.isAvailable ? 'Available' : 'Not available' %>
+            </label>
+          </div>
+        </form>
+      <% } %>
     <% } else if (user.role === 'admin') { %>
       <p>You can assign requests, manage users, and view reports.</p>
     <% } %>
