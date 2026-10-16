@@ -19,7 +19,17 @@
     <% if (user.role === 'requester') { %>
       <p>You can submit maintenance requests and track their status.</p>
     <% } else if (user.role === 'technician') { %>
-      <p>You can view your assigned jobs and update their status.</p>
+  <p>You can view your assigned jobs and update their status.</p>
+  <p>Your status:
+    <span class="badge <%= isAvailable ? 'bg-success' : 'bg-secondary' %>">
+      <%= isAvailable ? 'Available' : 'Not available' %>
+    </span>
+  </p>
+  <form method="POST" action="/technician/availability">
+    <button type="submit" class="btn btn-outline-primary">
+      Set as <%= isAvailable ? 'not available' : 'available' %>
+    </button>
+  </form>
     <% } else if (user.role === 'admin') { %>
       <p>You can assign requests, manage users, and view reports.</p>
     <% } %>
